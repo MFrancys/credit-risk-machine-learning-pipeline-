@@ -1,0 +1,250 @@
+main:
+  project_name: building-home-credit-default-risk-machine-learning-model
+  experiment_name: dev
+  random_seed: 42
+  data_train_path: data/processed/202404_train_data.pickle
+  data_validation_path: data/processed/202404_validation_data.pickle
+  data_test_path: data/processed/202404_test_data.pickle
+  model_path: models/develop/202404_xgbm_classifier.pickle
+  target: target
+  time_column: "loan_origination_datetime_month"
+  space_column: "customer_id"
+data_split:
+  train_start_date: "2022-07"
+  train_end_date: "2023-03"
+  holdout_end_date: "2023-05"
+model_parameters:
+  logistic_regression:
+    penalty: "l2"
+    C: 1.0
+  lgbm:
+    objective: "binary"         # Use binary classification since you mentioned imbalance assuming a binary target
+    boosting_type: "gbdt"       # Gradient Boosting Decision Tree
+    metric: "auc"               # Area Under the ROC Curve as a performance metric
+    num_leaves: 31              # Maximum tree leaves for base learners
+    learning_rate: 0.05         # Low learning rate to improve model robustness
+    feature_fraction: 0.8       # LightGBM will randomly select 80% of features before building each tree
+    bagging_fraction: 0.8       # Bagging (subsampling) fraction of the data for training
+    bagging_freq: 5             # Perform bagging every 5 iterations
+    is_unbalance: True          # Automatically adjust weights inversely proportional to class frequencies
+  xgbm:
+    objective": binary:logistic  # Objective function for binary classification
+    booster": gbtree             # Use tree-based models as base learners
+    eval_metric": auc            # Evaluation metric for validation data AUC is suitable for imbalanced data
+    eta: 0.01                     # Learning rate lower to make training more robust
+    gamma: 0.1                    # Minimum loss reduction required to make a further partition on a leaf node
+    max_depth: 6                  # Maximum depth of a tree increasing this value will make the model more complex
+    min_child_weight: 3           # Minimum sum of instance weight (hessian) needed in a child
+    subsample: 0.8                # Subsample ratio of the training instance
+    colsample_bytree: 0.8         # Subsample ratio of columns when constructing each tree
+    scale_pos_weight: 4           # Balancing of positive and negative weights
+    lambda: 1                     # L2 regularization term on weights increases with more features to combat overfitting
+    alpha: 0.1                    # L1 regularization term on weights
+    max_delta_step: 1             # Helps convergence in logistic regression problems when class is extremely imbalanced
+    n_estimators: 100             # Number of trees. You can set this number high and use early stopping during training
+
+raw_features:
+  numerical:
+    - "previous_internal_apps__ratio_bnpl_approved"
+    - "previous_internal_apps__last_bnpl_app_to_application_days"
+    - "previous_internal_apps__first_bnpl_app_to_application_days"
+    - "previous_internal_apps__account_to_application_days"
+    - "previous_internal_apps__n_sf_apps"
+    - "previous_internal_apps__n_bnpl_apps"
+    - "previous_internal_apps__n_bnpl_approved_apps"
+    - "previous_internal_apps__n_inquiries_l3m"
+    - "previous_internal_apps__n_inquiries_l6m"
+    - "credit_reports__loans_count"
+    - "credit_reports__max_credit_sum"
+    - "credit_reports__credit_limit_sum"
+    - "credit_reports__current_balance_sum"
+    - "credit_reports__balance_due_worst_delay_max"
+    - "credit_reports__balance_due_sum"
+    - "credit_reports__debt_ratio_max"
+    - "credit_reports__debt_ratio_median"
+    - "credit_reports__credit_type_nunique"
+    - "credit_reports__business_type_nunique"
+    - "credit_reports__age_max"
+    - "credit_reports__age_min"
+    - "credit_reports__severity_delayed_payments_max"
+    - "credit_reports__severity_delayed_payments_median"
+    - "credit_reports__severity_delayed_payments_std"
+    - "credit_reports__balance_due_ratio_max"
+    - "credit_reports__balance_due_ratio_median"
+    - "credit_reports__balance_due_ratio_std"
+    - "credit_reports__balance_due_worst_delay_ratio_max"
+    - "credit_reports__balance_due_worst_delay_ratio_median"
+    - "credit_reports__balance_due_worst_delay_ratio_std"
+    - "credit_reports__loans_with_at_least_one_delayed_count"
+    - "credit_reports__is_individual_responsibility_sum"
+    - "credit_reports__payment_amount_sum"
+    - "credit_reports__open_loans_count"
+    - "credit_reports__open_loans_max_credit_sum"
+    - "credit_reports__open_loans_credit_limit_sum"
+    - "credit_reports__open_loans_current_balance_sum"
+    - "credit_reports__open_loans_balance_due_sum"
+    - "credit_reports__open_loans_payment_amount_sum"
+    - "credit_reports__opening_loans_ratio"
+    - "credit_reports__loans_with_at_least_one_delayed_ratio"
+    - "credit_reports__debt_ratio"
+    - "credit_reports__debt_due_ratio"
+features:
+  numerical:
+    - "previous_internal_apps__account_to_application_days"
+    - "previous_internal_apps__first_bnpl_app_to_application_days"
+    - "previous_internal_apps__last_bnpl_app_to_application_days"
+    - "previous_internal_apps__n_bnpl_approved_apps"
+    - "previous_internal_apps__n_bnpl_apps"
+    - "previous_internal_apps__n_inquiries_l3m"
+    - "previous_internal_apps__n_inquiries_l6m"
+    - "previous_internal_apps__n_sf_apps"
+    - "previous_internal_apps__ratio_bnpl_approved"
+    - "credit_reports__age_max"
+    - "credit_reports__age_max_credito_de_habilitacion_o_avio"
+    - "credit_reports__age_max_hipoteca"
+    - "credit_reports__age_max_pagos_fijos"
+    - "credit_reports__age_max_por_determinar"
+    - "credit_reports__age_max_revolvente"
+    - "credit_reports__age_max_sin_limite_preestablecido"
+    - "credit_reports__age_median_pagos_fijos"
+    - "credit_reports__age_median_revolvente"
+    - "credit_reports__age_median_sin_limite_preestablecido"
+    - "credit_reports__age_min"
+    - "credit_reports__age_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__age_std_hipoteca"
+    - "credit_reports__age_std_pagos_fijos"
+    - "credit_reports__age_std_por_determinar"
+    - "credit_reports__age_std_revolvente"
+    - "credit_reports__age_std_sin_limite_preestablecido"
+    - "credit_reports__balance_due_median_credito_de_habilitacion_o_avio"
+    - "credit_reports__balance_due_median_hipoteca"
+    - "credit_reports__balance_due_median_pagos_fijos"
+    - "credit_reports__balance_due_median_por_determinar"
+    - "credit_reports__balance_due_median_revolvente"
+    - "credit_reports__balance_due_median_sin_limite_preestablecido"
+    - "credit_reports__balance_due_ratio_max_hipoteca"
+    - "credit_reports__balance_due_ratio_max_pagos_fijos"
+    - "credit_reports__balance_due_ratio_max_sin_limite_preestablecido"
+    - "credit_reports__balance_due_ratio_median"
+    - "credit_reports__balance_due_ratio_median_pagos_fijos"
+    - "credit_reports__balance_due_ratio_median_revolvente"
+    - "credit_reports__balance_due_ratio_median_sin_limite_preestablecido"
+    - "credit_reports__balance_due_ratio_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__balance_due_ratio_std_hipoteca"
+    - "credit_reports__balance_due_ratio_std_por_determinar"
+    - "credit_reports__balance_due_ratio_std_sin_limite_preestablecido"
+    - "credit_reports__balance_due_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__balance_due_std_hipoteca"
+    - "credit_reports__balance_due_std_pagos_fijos"
+    - "credit_reports__balance_due_std_por_determinar"
+    - "credit_reports__balance_due_std_revolvente"
+    - "credit_reports__balance_due_std_sin_limite_preestablecido"
+    - "credit_reports__balance_due_sum"
+    - "credit_reports__balance_due_sum_pagos_fijos"
+    - "credit_reports__balance_due_sum_revolvente"
+    - "credit_reports__balance_due_sum_sin_limite_preestablecido"
+    - "credit_reports__balance_due_worst_delay_max"
+    - "credit_reports__balance_due_worst_delay_max_hipoteca"
+    - "credit_reports__balance_due_worst_delay_max_pagos_fijos"
+    - "credit_reports__balance_due_worst_delay_max_revolvente"
+    - "credit_reports__balance_due_worst_delay_median_pagos_fijos"
+    - "credit_reports__balance_due_worst_delay_median_revolvente"
+    - "credit_reports__balance_due_worst_delay_ratio_max_pagos_fijos"
+    - "credit_reports__balance_due_worst_delay_ratio_max_sin_limite_preestablecido"
+    - "credit_reports__balance_due_worst_delay_ratio_median"
+    - "credit_reports__balance_due_worst_delay_ratio_median_pagos_fijos"
+    - "credit_reports__balance_due_worst_delay_ratio_median_sin_limite_preestablecido"
+    - "credit_reports__balance_due_worst_delay_ratio_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__balance_due_worst_delay_ratio_std_hipoteca"
+    - "credit_reports__balance_due_worst_delay_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__balance_due_worst_delay_std_pagos_fijos"
+    - "credit_reports__business_type_nunique_credito_de_habilitacion_o_avio"
+    - "credit_reports__business_type_nunique_hipoteca"
+    - "credit_reports__business_type_nunique_por_determinar"
+    - "credit_reports__business_type_nunique_revolvente"
+    - "credit_reports__business_type_nunique_sin_limite_preestablecido"
+    - "credit_reports__cdc_inquiry_id_count_por_determinar"
+    - "credit_reports__cdc_inquiry_id_count_revolvente"
+    - "credit_reports__cdc_inquiry_id_count_sin_limite_preestablecido"
+    - "credit_reports__credit_limit_median_revolvente"
+    - "credit_reports__credit_limit_std_por_determinar"
+    - "credit_reports__credit_limit_sum"
+    - "credit_reports__credit_limit_sum_revolvente"
+    - "credit_reports__credit_type_nunique"
+    - "credit_reports__credit_type_nunique_revolvente"
+    - "credit_reports__current_balance_median_hipoteca"
+    - "credit_reports__current_balance_median_pagos_fijos"
+    - "credit_reports__current_balance_median_revolvente"
+    - "credit_reports__current_balance_median_sin_limite_preestablecido"
+    - "credit_reports__current_balance_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__current_balance_std_hipoteca"
+    - "credit_reports__current_balance_std_pagos_fijos"
+    - "credit_reports__current_balance_std_revolvente"
+    - "credit_reports__current_balance_sum"
+    - "credit_reports__current_balance_sum_pagos_fijos"
+    - "credit_reports__current_balance_sum_revolvente"
+    - "credit_reports__debt_due_ratio"
+    - "credit_reports__debt_ratio"
+    - "credit_reports__debt_ratio_max"
+    - "credit_reports__debt_ratio_max_hipoteca"
+    - "credit_reports__debt_ratio_max_pagos_fijos"
+    - "credit_reports__debt_ratio_max_por_determinar"
+    - "credit_reports__debt_ratio_median"
+    - "credit_reports__debt_ratio_median_pagos_fijos"
+    - "credit_reports__debt_ratio_median_por_determinar"
+    - "credit_reports__debt_ratio_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__debt_ratio_std_hipoteca"
+    - "credit_reports__debt_ratio_std_por_determinar"
+    - "credit_reports__has_delayed_payments_sum_hipoteca"
+    - "credit_reports__has_delayed_payments_sum_por_determinar"
+    - "credit_reports__has_delayed_payments_sum_revolvente"
+    - "credit_reports__has_delayed_payments_sum_sin_limite_preestablecido"
+    - "credit_reports__is_individual_responsibility_sum_credito_de_habilitacion_o_avio"
+    - "credit_reports__loans_count"
+    - "credit_reports__loans_with_at_least_one_delayed_count"
+    - "credit_reports__loans_with_at_least_one_delayed_ratio"
+    - "credit_reports__max_credit_median_pagos_fijos"
+    - "credit_reports__max_credit_median_revolvente"
+    - "credit_reports__max_credit_median_sin_limite_preestablecido"
+    - "credit_reports__max_credit_std_hipoteca"
+    - "credit_reports__max_credit_std_por_determinar"
+    - "credit_reports__max_credit_std_revolvente"
+    - "credit_reports__max_credit_sum"
+    - "credit_reports__max_credit_sum_por_determinar"
+    - "credit_reports__open_loans_count"
+    - "credit_reports__open_loans_credit_limit_sum"
+    - "credit_reports__open_loans_max_credit_sum"
+    - "credit_reports__opening_loans_ratio"
+    - "credit_reports__payment_amount_sum"
+    - "credit_reports__payment_amount_sum_hipoteca"
+    - "credit_reports__payment_amount_sum_pagos_fijos"
+    - "credit_reports__payment_amount_sum_revolvente"
+    - "credit_reports__severity_delayed_payments_max"
+    - "credit_reports__severity_delayed_payments_max_hipoteca"
+    - "credit_reports__severity_delayed_payments_max_revolvente"
+    - "credit_reports__severity_delayed_payments_max_sin_limite_preestablecido"
+    - "credit_reports__severity_delayed_payments_median"
+    - "credit_reports__severity_delayed_payments_median_pagos_fijos"
+    - "credit_reports__severity_delayed_payments_median_revolvente"
+    - "credit_reports__severity_delayed_payments_std"
+    - "credit_reports__severity_delayed_payments_std_credito_de_habilitacion_o_avio"
+    - "credit_reports__severity_delayed_payments_std_hipoteca"
+    - "credit_reports__severity_delayed_payments_std_por_determinar"
+    - "credit_reports__severity_delayed_payments_std_revolvente"
+    - "credit_reports__severity_delayed_payments_std_sin_limite_preestablecido"
+filter_features:
+  numerical:
+  - 'previous_internal_apps__account_to_application_days'
+  - 'previous_internal_apps__n_bnpl_approved_apps'
+  - 'previous_internal_apps__n_sf_apps'
+  - 'previous_internal_apps__ratio_bnpl_approved'
+  - 'credit_reports__balance_due_ratio_median'
+  - 'credit_reports__balance_due_std_revolvente'
+  - 'credit_reports__balance_due_worst_delay_ratio_median_pagos_fijos'
+  - 'credit_reports__cdc_inquiry_id_count_por_determinar'
+  - 'credit_reports__credit_limit_median_revolvente'
+  - 'credit_reports__debt_ratio_median_pagos_fijos'
+  - 'credit_reports__loans_with_at_least_one_delayed_ratio'
+  - 'credit_reports__severity_delayed_payments_median'
+  - 'credit_reports__severity_delayed_payments_median_pagos_fijos'
+  - 'credit_reports__severity_delayed_payments_median_revolvente'
