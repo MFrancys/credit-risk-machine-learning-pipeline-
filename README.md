@@ -36,9 +36,9 @@ To ensure the model is scalable, reproducible, and easily maintainable, I implem
 
 
 
-## Description of project steps
+## Description of the project notebooks.
 
-### 1. Business understanding
+### 0.0.0. Business understanding
 The objective variable of this problem is to estimate the probability that the applicants can pay the loan on time. To address this problem, I built a binary classification model. I used a sample of requests associated with their respective label indicating whether the loan was repaid or the loan was not repaid. In addition, I used a subset of information on the characteristics of the requested credit and the client, such as their historical credit behavior. Finally, I used the predicted score for each application that the model returns to make decisions.
 To define how this probability will be used is necessary to determine the business objectives:
 * Option 1: We want business rules focused on maximizing the ability to identify bad applicants. But the number of mislabels on good applicants increases (false negative rate). With this approach, we would minimize the credit risk but increase the users' friction by rejecting that they can pay the loan.
@@ -49,9 +49,41 @@ On the other hand, to choose the structure of the model and evaluate its perform
 
 Additionally, one of the characteristics of this problem is the not repaid loan sample is much higher than the repaid loan sample. Therefore, We also evaluated the Precision-Recall AUC (PR AUC), which is a more robust metric to evaluate a classifier in these situations to deal with class imbalance.
 
-### 2. Data preparation and featuring Engineering
 
+### [1.0.0 Build inputs from Previous Internal Applications](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.0.0_build_inputs_from_previous_internal_applications.ipynb)
+#### - Methodology
+This section aims to create informative and meaningful features that capture customers' past interactions with credit products, particularly their Buy Now, Pay Later (BNPL) applications and SF applications. 
 
+Here are some features we explored: 
+- Raw Features:
+    1. Account to Application Days (previous_internal_apps__account_to_application_days): This directly captures the duration from account creation to loan application, providing insights into the customer’s planning or urgency in financial matters.
+    2. Number of Smartphone Financing Applications (previous_internal_apps__n_sf_apps): Reflects the customer's interest in financing options specifically for smartphones, which can be indicative of their spending habits and preferences.
+    - Total BNPL Applications and Approvals:
+      3. Applications (previous_internal_apps__n_bnpl_apps): Total number of BNPL applications made.
+      4. Approvals (previous_internal_apps__n_bnpl_approved_apps): Number of BNPL applications that were approved.
+    - Credit Inquiries:
+      5. Last 3 Months (previous_internal_apps__n_inquiries_l3m): Inquiries in the last 3 months.
+      6. Last 6 Months (previous_internal_apps__n_inquiries_l6m): Inquiries in the last 6 months.
+
+- Derived Features: 
+    7. BNPL Approval Ratio (previous_internal_apps__ratio_bnpl_approved): The ratio of approved BNPL applications to the total number of BNPL applications (n_bnpl_approved_apps / n_bnpl_apps).
+    8. Days from Last BNPL Application to Loan Application (previous_internal_apps__last_bnpl_app_to_application_days): The number of days between the date of the last BNPL application and the date of the current loan application (application_datetime - last_bnpl_app_date).
+    9. Days from First BNPL Application to Loan Application (previous_internal_apps__first_bnpl_app_to_application_days): The number of days between the date of the first BNPL application and the date of the current loan application (application_datetime - first_bnpl_app_date).
+
+### [1.1.0 Build inputs from credit reports dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.1.0_build_inputs_from_credit_reports_dataset.ipynb) 
+
+#### - Methodology
+The goal of this section is to construct informative and actionable features from the credit reports dataset that encapsulate each customer's credit history effectively. This involves a meticulous aggregation and transformation of credit-related data
+
+Here are some features we explored, overall and by credit time: 
+- Raw Features:
+    - Total Loans Count (credit_reports__loans_count): Captures the total number of loans associated with each customer, providing a direct measure of credit usage.
+    - Maximum Credit Used (credit_reports__max_credit_max): Represents the peak credit amount utilized by the customer, indicating their highest financial leverage or needs.
+- Derived Features:
+    - Credit Utilization Ratios (credit_reports__debt_ratio): Calculated as the ratio of current balance to credit limit, this metric helps in assessing how much of the available credit is being utilized by the customer.
+    - Delayed Payment Indicators (credit_reports__has_delayed_payments): Reflects whether there have been any payments past their due date, which is a critical indicator of potential default risk.
+    - Diversity in Credit Types (credit_reports__credit_type_nunique): The count of unique types of credit, which illustrates the variety of credit facilities used by the customer.
+    - Age of Credit (credit_reports__age): Measures the duration from the opening to the closing of the credit or to the current date if it's still active, providing insights into the longevity of credit relationships.
 
 ## 3. Featuring Engineering
 
