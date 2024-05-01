@@ -2,10 +2,10 @@ main:
   project_name: building-home-credit-default-risk-machine-learning-model
   experiment_name: dev
   random_seed: 42
-  data_train_path: data/processed/202404_train_data.pickle
-  data_validation_path: data/processed/202404_validation_data.pickle
-  data_test_path: data/processed/202404_test_data.pickle
-  model_path: models/develop/202404_xgbm_classifier.pickle
+  data_train_path: data/processed/202405_train_data.pickle
+  data_validation_path: data/processed/202405_validation_data.pickle
+  data_test_path: data/processed/202405_test_data.pickle
+  model_path: models/develop/202405_xgbm_classifier.pickle
   target: target
   time_column: "loan_origination_datetime_month"
   space_column: "customer_id"

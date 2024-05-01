@@ -56,19 +56,19 @@ This section aims to create informative and meaningful features that capture cus
 
 Here are some features we explored: 
 - Raw Features:
-    1. Account to Application Days (previous_internal_apps__account_to_application_days): This directly captures the duration from account creation to loan application, providing insights into the customer’s planning or urgency in financial matters.
-    2. Number of Smartphone Financing Applications (previous_internal_apps__n_sf_apps): Reflects the customer's interest in financing options specifically for smartphones, which can be indicative of their spending habits and preferences.
-    - Total BNPL Applications and Approvals:
-      3. Applications (previous_internal_apps__n_bnpl_apps): Total number of BNPL applications made.
-      4. Approvals (previous_internal_apps__n_bnpl_approved_apps): Number of BNPL applications that were approved.
-    - Credit Inquiries:
-      5. Last 3 Months (previous_internal_apps__n_inquiries_l3m): Inquiries in the last 3 months.
-      6. Last 6 Months (previous_internal_apps__n_inquiries_l6m): Inquiries in the last 6 months.
+  - Account to Application Days (previous_internal_apps__account_to_application_days): This directly captures the duration from account creation to loan application, providing insights into the customer’s planning or urgency in financial matters.
+  - Number of Smartphone Financing Applications (previous_internal_apps__n_sf_apps): Reflects the customer's interest in financing options specifically for smartphones, which can be indicative of their spending habits and preferences.
+  - Total BNPL Applications and Approvals:
+    - Applications (previous_internal_apps__n_bnpl_apps): Total number of BNPL applications made.
+    - Approvals (previous_internal_apps__n_bnpl_approved_apps): Number of BNPL applications that were approved.
+  - Credit Inquiries:
+    - Last 3 Months (previous_internal_apps__n_inquiries_l3m): Inquiries in the last 3 months.
+    - Last 6 Months (previous_internal_apps__n_inquiries_l6m): Inquiries in the last 6 months.
 
-- Derived Features: 
-    7. BNPL Approval Ratio (previous_internal_apps__ratio_bnpl_approved): The ratio of approved BNPL applications to the total number of BNPL applications (n_bnpl_approved_apps / n_bnpl_apps).
-    8. Days from Last BNPL Application to Loan Application (previous_internal_apps__last_bnpl_app_to_application_days): The number of days between the date of the last BNPL application and the date of the current loan application (application_datetime - last_bnpl_app_date).
-    9. Days from First BNPL Application to Loan Application (previous_internal_apps__first_bnpl_app_to_application_days): The number of days between the date of the first BNPL application and the date of the current loan application (application_datetime - first_bnpl_app_date).
+- Derived Features:  
+  - BNPL Approval Ratio (previous_internal_apps__ratio_bnpl_approved): The ratio of approved BNPL applications to the total number of BNPL applications (n_bnpl_approved_apps / n_bnpl_apps).
+  - Days from Last BNPL Application to Loan Application (previous_internal_apps__last_bnpl_app_to_application_days): The number of days between the date of the last BNPL application and the date of the current loan application (application_datetime - last_bnpl_app_date).
+  - Days from First BNPL Application to Loan Application (previous_internal_apps__first_bnpl_app_to_application_days): The number of days between the date of the first BNPL application and the date of the current loan application (application_datetime - first_bnpl_app_date).
 
 ### [1.1.0 Build inputs from credit reports dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.1.0_build_inputs_from_credit_reports_dataset.ipynb) 
 
@@ -85,117 +85,93 @@ Here are some features we explored, overall and by credit time:
     - Diversity in Credit Types (credit_reports__credit_type_nunique): The count of unique types of credit, which illustrates the variety of credit facilities used by the customer.
     - Age of Credit (credit_reports__age): Measures the duration from the opening to the closing of the credit or to the current date if it's still active, providing insights into the longevity of credit relationships.
 
-## 3. Featuring Engineering
+### [1.2.0 Build Final Dataset] (https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.2.0_build_final_dataset.ipynb)
 
-I created new variables by calculating statistics on the historical information of the clients' credit behavior, such as the average, max, min, and sum. With this, I passed from a data frame of 116 features to one of around 600.
+#### Methodology:
+The main goal of this stage is to compile the final dataset that merges the target variable with features generated from previous steps, specifically those created by build_previous_internal_app_features and build_aggregate_credit_report_information_by. This comprehensive dataset will be the foundation for all subsequent modeling efforts, such as training and validation of machine learning models to predict customer creditworthiness.
 
-#### More details in Notebook:  2. Machine Learning Pipeline - Home Credit Default Risk: Feature Engineering
-
-## 4. Modeling
-### a. Train baseline model
-
-I trained a base logit regression as a benchmark to measure future progress when applying feature selection and hyperparameter tuning. The results were the following:
-        
-  - ROC AUC Train: 75.97%
-  - ROC AUC Validation: 75.11%
-  - PR AUC Train: 23.95%
-  - PR AUC Validation: 23.1%
-
-### b. Train other models
-
-    - Random Forest 
-        - ROC AUC Train: 100.0%
-        - ROC AUC Validation: 70.1%
-        - PR AUC Train: 100.0%
-        - PR AUC Validation: 19.3%
-
-    - LightGBM
-        - ROC AUC Train: 83.5%
-        - ROC AUC Validation: 76.67%
-        - PR AUC Train: 38.44%
-        - PR AUC Validation: 25.8%
-
-Finally, I chose the lightgbm because this model had the highest ROC AUC among the three tested models. Also, this model can deal with null values in the features, and its performance is not affected by the magnitudes of the feature values.
-
-### c. Forward Feature selection
-- Get Feature Importance from Shap Values
-  <img src="image/shap_values.png">
-  - Choose the number of features.
-  <img src="image/roc_auc_forward_selection_features.png">
-  <img src="image/pr_auc_forward_selection_feature_set.png">
-The number of features that optimize the performance of the model is 80.
-
-### d. Hyperparameter Tuning
-The following LightGBM hyperparameters were chosen to optimize:
-- learning_rate
-- num_estimators
-- num_leaves
-- max_depth
-- min_data_in_leaf
-- bagging_fraction
-- feature_fraction
-
-The best iteration That I got was the following definition:
-- number_feature: 70
-- model_parameters: 
-  - num_estimators: 142
-  - learning_rate': 0.1261689397241983
-  - num_leaves: 36
-  - max_depth: 375
-  - min_data_in_leaf: 69
-  - bagging_fraction: 0.7812134356069105
-  - feature_fraction: 0.6116389811545921
-   
- With the following results: 
-  - ROC AUC Train: 86.02%
-  - ROC AUC Validation: 76.73%
-  - PR AUC Train: 37.32%
-  - PR AUC Validation: 26.21%
+Data Integration:
+1. Merge Target Data: Start by merging the dataset containing the target variable (e.g., loan default status) with features derived from the build_previous_internal_app_features function, which provides insights into the customer's past interactions with credit products.
+2. Add Aggregated Credit Information: Integrate additional features from the build_aggregate_credit_report_information_by function. This includes detailed credit behavior metrics at the customer level, further enriching the dataset.
 
 
-#### More details in Notebook:  3. Machine Learning Pipeline - Home Credit Default Risk: Modeling and Evaluation
+### 1.3.0 Target Analysis
+
+#### Methodology
+This section of the analysis focuses on examining the target variable, which identifies whether a loan is bad (i.e., the customer was 34 days late or more in 77 days of contract). Understanding patterns in the bad rate is crucial for assessing risk and calibrating the model accordingly.
+1. Overall Bad Rate: Calculate the overall default rate by dividing the sum of defaulted loans by the total number of loans.
+    Results: Based on the data provided:
+    - Total Loans: 14,454
+    - Total Defaults: 2,700
+    - Overall Default Rate: 18.68%
+
+2. Bad Rate Analysis by Loan Origination Month: To determine how the bad rate varies by the month the loan was originated.
+   - Data Segmentation: Group the dataset by the loan_origination_datetime_month to analyze loans based on the month they were disbursed.
+   - Rate Calculation: For each group, calculate the total number of loans (LOANS), the number of bad loans (BAD_LOANS), and the bad rate (BAD_RATE as the ratio of BAD_LOANS to LOANS).
+
+3. Bad Rate Analysis by Credit Experience: This study analyzes the default rates among different segments of customers based on their credit experience (customers with no credit history, with less credit experience, and with high credit experience).
+   - Customer Segmentation: Classify customers into categories based on their credit experience. The criteria for segmentation (e.g., number of prior loans, credit age) should be clearly defined.
+   - Rate Calculation: Calculate the default rate for each category to identify which segment poses higher risks.
 
 
-## 5. Evaluation on Test Dataset
+#### Conclusions
+- Insights from Loan Origination Month Analysis
+    - Trends Observed:
+        - The bad rate tends to increase as the year progresses, peaking in early 2023 before showing a variable trend.
+        - Notable peaks are observed in October 2022, December 2022, and January 2023, suggesting potential seasonality or economic factors impacting default rates (e.g. Buen Fin, Christmas).
+    
+        <img src="image/default_rate_image.png">
+      
+- Insights from Credit Experience Analysis
+    - It is hypothesized that customers with no or limited credit history might exhibit higher default rates due to unproven creditworthiness. Conversely, those with extensive credit history might show lower default rates if they have a history of good credit management.
 
-Final Model:
-- number_feature: 70
-- model_parameters: 
-  - num_estimators: 142
-  - learning_rate': 0.1261689397241983
-  - num_leaves: 36
-  - max_depth: 375
-  - min_data_in_leaf: 69
-  - bagging_fraction: 0.7812134356069105
-  - feature_fraction: 0.6116389811545921
-		
- With the following results: 
-  - ROC AUC Train: 85.4%
-  - ROC AUC Validation: 77.82%
-  - PR AUC Train: 36.07%
-  - PR AUC Validation: 26.81%
+    Below is a table showing the number of loans, bad loans, and the bad rate segmented by the count range of credit reports:
+    
+    | credit_reports__loans_count_range | LOANS | BAD_LOANS | BAD_RATE |
+    |-----------------------------------|-------|-----------|----------|
+    | (-1, 0]                           | 5282  | 982       | 0.185914 |
+    | (0, 5]                            | 983   | 183       | 0.186165 |
+    | (5, 10]                           | 1292  | 260       | 0.201238 |
+    | (10, 15]                          | 1100  | 233       | 0.211818 |
+    | (15, 30]                          | 2433  | 493       | 0.202630 |
+    | (30, 300]                         | 3364  | 549       | 0.163199 |
 
-#### More details in Notebook:  3. Machine Learning Pipeline - Home Credit Default Risk: Modeling and Evaluation
 
-## 6. Definition of business rules
+### 2.0.0 - Data Split
 
-Finally, the final decision system based on the predictions of the model must be adequately balanced to identify customers who cannot repay the credit without the system being too strict and incorrectly rejecting those who can pay, affecting the customer experience. Therefore, to decide whether or not to deny a loan, we can use a customer's credit default score assigned by the model and define several thresholds to act based on where that score is.
+#### Methodology
 
-To increase the default identification rate and ensure a smooth experience for most customers, we defined the following business rules:
+This section details the process of splitting the dataset into training, validation, and testing sets. The dataset was split using a time-based strategy to segregate the data into distinct periods for training, validation, and testing. Furthermore, a spatial segregation approach was employed within the training data to create a validation set.
 
-- Extreme risk: This rule seeks to correctly identify customers who cannot pay the credit with a very low rate of false positives. Requests identified by this rule may be automatically rejected. Therefore, a false positive rate of less than 5% will be allowed. This rate corresponds to requests whose score is between 0.77 and 1.0.
+#### Conclusion:
 
-- High risk: This rule seeks to identify more customers who cannot pay, assuming a higher rate of false positives. The false positive rate tolerance level for this rule equals 20%, and this rate corresponds to requests whose score is between 0.57 and 0.77. But as the number of mislabeled good customers identified by the model increases, customers who fall into this segment must manually go through a more extensive review before being denied.
+- Data Split
 
-- Low risk: Applications with a score lower than 0.57 can be automatically approved.
+    - Training Set: Data from July 2022 to February 2023, used for initial model training.
+    - Validation Set: A subset of the training set, spatially distinct, used for tuning model parameters and initial evaluation.
+    - Testing Set: Data from March 2023 to April 2024, used to simulate model performance on future, unseen data.
+- Data Distribution 
+    - The split resulted in the following distribution of samples:
+    - Training Set: 9479 samples with a default rate (bads) of 19.4%.
+    - Validation Set: 1053 samples with a default rate of 19.94%.
+    - Testing Set: 3845 samples with a default rate of 16.9%. 
+    
+  This distribution ensures that each set is representative of the overall data, with the training set encompassing the majority of the data (65.59%), followed by the testing set (26.7%) and the validation set (7.3%).
 
-<img src="image/false_positive_rate.png">
+| Split      | n_samples | bads | Start Date | End Date | Target Distribution | Samples Distribution |
+|------------|-----------|------|------------|----------|---------------------|----------------------|
+| Train      | 9479      | 1839 | 2022-07    | 2023-02  | 0.194008            | 0.659317             |
+| Validation | 1053      | 210  | 2022-07    | 2023-02  | 0.199430            | 0.073242             |
+| Test       | 3845      | 650  | 2023-03    | 2023-04  | 0.169051            | 0.267441             |
 
-<img src="image/business_rule.png">
 
-Based on the set of tests, the number of clients that the model identifies as a potential risk of non-repayment is evaluated, that is, those whose score is greater than 0.57. 
-The following results are obtained: 
-- Accuracy: 79.12%.
-- Recall rate: 58.19%.
-- Percentage Amount of credit risk detected: 54.76%
-<img src="image/confu_matrix.png">
+### 3.0.0. EDA
+
+#### Methodology
+
+As part of our data preparation and understanding phase, we conducted an extensive exploratory data analysis on the training dataset using the `pandas_profiling` package. This tool enables an automated and comprehensive EDA, generating a detailed report that includes:
+
+- Statistics: Descriptive statistics that summarize a dataset's distribution's central tendency, dispersion, and shape.
+- Correlations: Analysis of the relationships between features, identifying which pairs have the strongest correlations with the target variable.
+- Missing Values: Identifying and visualizing missing data patterns, helping to decide necessary preprocessing steps.
+- Distributions: Visualizations of data distributions and variance to understand the skewness and outliers that might influence model performance.
