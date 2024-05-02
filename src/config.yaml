@@ -4,6 +4,7 @@ main:
   execute_steps:
     - build_data
     - data_split
+    - train_model
     - evaluate_model
   data_path:
     main_dataset: data/raw_data/main_dataset.parquet
@@ -24,18 +25,34 @@ model_pipeline:
   target: target
   random_seed: 42
   xgbm:
-    max_depth: 3
-    subsample: 0.8
-    colsample_bytree: 0.8
+    objective: binary:logistic    # Objective function for binary classification
+    booster: gbtree               # Use tree-based models as base learners
+    eval_metric: auc             # Evaluation metric for validation data AUC is suitable for imbalanced data
+    eta: 0.01                     # Learning rate lower to make training more robust
+    gamma: 0.1                    # Minimum loss reduction required to make a further partition on a leaf node
+    max_depth: 6                  # Maximum depth of a tree increasing this value will make the model more complex
+    min_child_weight: 3           # Minimum sum of instance weight (hessian) needed in a child
+    subsample: 0.8                # Subsample ratio of the training instance
+    colsample_bytree: 0.8         # Subsample ratio of columns when constructing each tree
+    scale_pos_weight: 4           # Balancing of positive and negative weights
+    lambda: 1                     # L2 regularization term on weights increases with more features to combat overfitting
+    alpha: 0.1                    # L1 regularization term on weights
+    max_delta_step: 1             # Helps convergence in logistic regression problems when class is extremely imbalanced
+    n_estimators: 100             # Number of trees. You can set this number high and use early stopping during training
   features:
     numerical:
-      - "previous_internal_apps__account_to_application_days"
-      - "previous_internal_apps__n_sf_apps"
-      - "previous_internal_apps__n_bnpl_apps"
-      - "previous_internal_apps__ratio_bnpl_approved"
-      - "previous_internal_apps__n_bnpl_approved_apps"
-      - "previous_internal_apps__last_bnpl_app_to_application_days"
-      - "previous_internal_apps__first_bnpl_app_to_application_days"
-      - "previous_internal_apps__n_inquiries_l3m"
-      - "previous_internal_apps__n_inquiries_l6m"
+    - 'previous_internal_apps__account_to_application_days'
+    - 'previous_internal_apps__n_bnpl_approved_apps'
+    - 'previous_internal_apps__n_sf_apps'
+    - 'previous_internal_apps__ratio_bnpl_approved'
+    - 'credit_reports__balance_due_ratio_median'
+    - 'credit_reports__balance_due_std_revolvente'
+    - 'credit_reports__balance_due_worst_delay_ratio_median_pagos_fijos'
+    - 'credit_reports__cdc_inquiry_id_count_por_determinar'
+    - 'credit_reports__credit_limit_median_revolvente'
+    - 'credit_reports__debt_ratio_median_pagos_fijos'
+    - 'credit_reports__loans_with_at_least_one_delayed_ratio'
+    - 'credit_reports__severity_delayed_payments_median'
+    - 'credit_reports__severity_delayed_payments_median_pagos_fijos'
+    - 'credit_reports__severity_delayed_payments_median_revolvente'
   export_artifact: "model_export"

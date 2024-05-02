@@ -14,3 +14,4 @@ dependencies:
       - omegaconf==2.3.0
       - loguru==0.7.2
       - mlflow==2.11.3
+      - xgboost==2.0.3

@@ -54,7 +54,7 @@ def go(args):
     target = model_config["target"]
 
     test_data_path = run.use_artifact(args.test_data).file()
-    test_df = pd.read_csv(test_data_path, low_memory=False)
+    test_df = pd.read_pickle(test_data_path)
 
     logger.info("Extracting target from dataframe")
     X_test, Y_test = test_df[features], test_df[target]

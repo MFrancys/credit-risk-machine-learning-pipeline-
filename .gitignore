@@ -23,3 +23,9 @@ images/.DS_Store
 build/
 .idea/
 notebook/.ipynb_checkpoints/
+src/evaluate_model/artifacts/
+src/evaluate_model/wandb/
+src/train_model/artifacts/
+src/train_model/wandb/
+src/build_data/previous_internal_application_features/__pycache__/
+src/build_data/credit_report_features/__pycache__/

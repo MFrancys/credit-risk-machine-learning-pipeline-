@@ -85,7 +85,7 @@ Here are some features we explored, overall and by credit time:
     - Diversity in Credit Types (credit_reports__credit_type_nunique): The count of unique types of credit, which illustrates the variety of credit facilities used by the customer.
     - Age of Credit (credit_reports__age): Measures the duration from the opening to the closing of the credit or to the current date if it's still active, providing insights into the longevity of credit relationships.
 
-### [1.2.0 Build Final Dataset] (https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.2.0_build_final_dataset.ipynb)
+### [1.2.0 Build Final Dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.2.0_build_final_dataset.ipynb)
 
 #### Methodology:
 The main goal of this stage is to compile the final dataset that merges the target variable with features generated from previous steps, specifically those created by build_previous_internal_app_features and build_aggregate_credit_report_information_by. This comprehensive dataset will be the foundation for all subsequent modeling efforts, such as training and validation of machine learning models to predict customer creditworthiness.
@@ -95,7 +95,7 @@ Data Integration:
 2. Add Aggregated Credit Information: Integrate additional features from the build_aggregate_credit_report_information_by function. This includes detailed credit behavior metrics at the customer level, further enriching the dataset.
 
 
-### 1.3.0 Target Analysis
+### [1.3.0 Target Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/1.3.0_target_analysis.ipynb)
 
 #### Methodology
 This section of the analysis focuses on examining the target variable, which identifies whether a loan is bad (i.e., the customer was 34 days late or more in 77 days of contract). Understanding patterns in the bad rate is crucial for assessing risk and calibrating the model accordingly.
@@ -137,7 +137,7 @@ This section of the analysis focuses on examining the target variable, which ide
     | (30, 300]                         | 3364  | 549       | 0.163199 |
 
 
-### 2.0.0 - Data Split
+### [2.0.0 - Data Split](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/2.0.0_split_dataset.ipynb)
 
 #### Methodology
 
@@ -165,7 +165,7 @@ This section details the process of splitting the dataset into training, validat
 | Test       | 3845      | 650  | 2023-03    | 2023-04  | 0.169051            | 0.267441             |
 
 
-### 3.0.0. EDA
+### [3.0.0. EDA]
 
 #### Methodology
 
@@ -176,7 +176,7 @@ As part of our data preparation and understanding phase, we conducted an extensi
 - Missing Values: Identifying and visualizing missing data patterns, helping to decide necessary preprocessing steps.
 - Distributions: Visualizations of data distributions and variance to understand the skewness and outliers that might influence model performance.
 
-### 3.1.0. EDA: Identify Features with High Correlation
+### [3.1.0. EDA: Identify Features with High Correlation](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/3.1.0_eda_high_correlation_variables.ipynb)
 
 #### Methodology
 
@@ -194,12 +194,13 @@ Approach:
 - Initial Feature Count: Begin with an initial set of 262 features.
 - Feature Exclusion: After applying the correlation threshold, identify 109 features that are highly correlated with others. From each correlated pair or group, choose to drop the feature that is less significant from a business or data quality perspective, retaining 153 features for further analysis.
 
-# 4.0.0. Building a Baseline Classifier Model
+### 4.0.0. Building a Baseline Classifier Model
 
-### Methodology
+#### Methodology
 
 In this section, we trained three different baseline classifier models to handle a imbalance dataset, with presence of null values, and nonlinear relationships among features. The models selected for this initial analysis were Logistic Regression, LightGBM (LGBM), and XGBoost (XGBM), because:
 1. Logistic Regression
+
    Logistic regression is a linear model that estimates probabilities using a logistic function. 
     - Pros:
         - Simplicity and Interpretability: Easy to implement and results are interpretable.
@@ -210,6 +211,7 @@ In this section, we trained three different baseline classifier models to handle
         - Cannot Handle Missing Values Directly: Requires complete data or imputation of missing values before training.
         
 2. LightGBM (LGBM)
+
     LightGBM is a gradient boosting framework that uses tree-based learning algorithms.
     - Pros:
         - Scalability: Works well with large datasets and supports GPU learning.
@@ -222,6 +224,7 @@ In this section, we trained three different baseline classifier models to handle
         - Parameter Tuning: Requires careful tuning of parameters and sometimes extensive hyperparameter optimization.
 
 3. XGBoost (XGBM)
+
    XGBoost also uses gradient boosting algorithms but is known for its ability to do parallel processing, tree pruning, handling missing values, and regularizing to avoid overfitting.
     - Pros
         - Handling Irregularities: Good at handling missing values and various data irregularities.
@@ -276,7 +279,7 @@ The following results were observed across the models, showing the pros and cons
 
 Based on the evaluation metrics, XGBM outperforms the other models with the highest ROC AUC, PR AUC, and KS scores, making it the most suitable choice given the complexity of the dataset with unbalanced data and non-linear relationships.
 
-### 5.0.0. Classifier Model with Feature Selection
+### [5.0.0. Classifier Model with Feature Selection](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/5.0.0_classifier_model_with_feature_selection-Copy1.ipynb)
 
 #### Methodology
 
@@ -299,7 +302,7 @@ In our modeling phase, we implemented feature selection using the Boruta algorit
      - 'credit_reports__severity_delayed_payments_median_pagos_fijos'
      - 'credit_reports__severity_delayed_payments_median_revolvente'
 
-### 6.0.0 Hyperparameter Optimization for Classifier Model
+### [6.0.0 Hyperparameter Optimization for Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/6.0.0_hyperparameter_optimization_for_classifier_model.ipynb)
 
 #### Methodology
 
@@ -315,7 +318,7 @@ The primary goal is to tune the XGBOOST parameters:
     - max_delta_step: Introduced a broader range to help stabilize updates in scenarios of high class imbalance.
     - n_estimators: Increased the maximum to allow more trees to be evaluated, which can be crucial when all other parameters are being optimized for better granularity.
 
-### 7.0.0 Building a Final Classifier Model
+### [7.0.0 Building a Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/7.0.0_build_final_classifier_model.ipynb)
 
 #### Methodology
 
@@ -373,7 +376,7 @@ These results indicate the model's effectiveness in discriminating between posit
 
 These steps will help refine the model to meet better the business goals of reducing credit risk while ensuring fair and efficient loan approval processes.
 
-# 8.0.0 Evaluate Final Classifier Model
+# [8.0.0 Evaluate Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/8.0.0_evaluate_final_classifier_model.ipynb)
 
 ### Performance Evaluation
 
@@ -415,7 +418,7 @@ The evaluation of the final model shows moderate performance with room for impro
 
 Future efforts will focus on enhancing model accuracy and robustness through advanced feature engineering, hyperparameter optimization, and possibly integrating additional data sources to enrich the model's understanding of the applicant's financial behavior.
 
-### 8.1.0. Score Band Analysis
+### [8.1.0. Score Band Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/8.1.0_score_band_analysis.ipynb)
 
 #### Overview
 This section presents the analysis of score bands derived from the final model. Score bands help to segment the population based on the risk of default. The segments are created using the score predicted by the model, allowing us to observe the distribution of bad and good loans across different score ranges.
