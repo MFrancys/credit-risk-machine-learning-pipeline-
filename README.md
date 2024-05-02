@@ -455,3 +455,15 @@ The Score Band Analysis provides valuable insights into the model's performance 
 | 7      | 0.492     | 0.515     | 260     | 48.0 | 212   | 10.884    | 9.788      | 72.562        | 81.487         | 8.925 |
 | 8      | 0.515     | 0.553     | 261     | 57.0 | 204   | 12.925    | 9.418      | 85.487        | 90.905         | 5.418 |
 | 9      | 0.554     | 0.649     | 261     | 64.0 | 197   | 14.512    | 9.095      | 99.999        | 100.000        | 0.001 |
+
+
+## Future Work
+
+As we continue to refine and evolve the model, our focus will remain on improving both its accuracy and robustness, ensuring that it aligns with business objectives while managing credit risk effectively. The following are key areas where future efforts will be concentrated:
+
+- Expanding Data Sources for Underrepresented Groups: The model currently shows limited performance in predicting outcomes for clients without extensive credit history. To address this, we can explore non-traditional data sources such as device information, social network analysis, and digital footprints. These sources could provide valuable insights into a user’s behavior and reliability, enhancing our ability to assess risk accurately for new or underserved customer segments.
+- Integration of Fraud Detection Techniques: Incorporating elements of fraud detection, like validating email addresses and analyzing digital behavior, can help in assessing the integrity of applications, thus reducing both credit and fraud risk.
+These initiatives will not only help in optimizing the model but also ensure that it remains adaptable to changing market conditions and customer behaviors. The goal is to create a fair, efficient, and effective loan approval process that supports the company's growth and customer satisfaction.
+- Hyperparameter Optimization: Ongoing tuning of hyperparameters may lead to better performance, with a special emphasis on enhancing the Precision-Recall AUC which is crucial for managing the balance between recognizing genuine applicants and minimizing false positives.
+- Advanced Feature Engineering: By incorporating additional data sources and exploring advanced feature engineering techniques, we can further improve the model's ability to identify complex behavioral patterns that may indicate credit risk.
+
