@@ -165,7 +165,7 @@ This section details the process of splitting the dataset into training, validat
 | Test       | 3845      | 650  | 2023-03    | 2023-04  | 0.169051            | 0.267441             |
 
 
-### [3.0.0. EDA]
+### [3.0.0. EDA](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/3.0.0_eda.ipynb)
 
 #### Methodology
 
