@@ -26,7 +26,50 @@ To develop a robust model, the project was structured into several key phases:
 
 ## Project Implementation
 
-To ensure the model is scalable, reproducible, and easily maintainable, I implemented an ML pipeline that automates the journey from data processing to making predictions. This pipeline encapsulates all the steps necessary to prepare the data, execute the model, and generate predictions, facilitating both deployment and future adjustments.
+To ensure the model is scalable, reproducible, and easily maintainable, We implemented an ML pipeline that automates the journey from data processing to making predictions. This pipeline encapsulates all the steps necessary to prepare the data, execute the model, and generate predictions, facilitating both deployment and future adjustments.
+
+### How to Install ML Pipeline
+
+To set up and run the credit risk machine learning pipeline on your local machine, follow these steps:
+
+Create a Conda Environment:
+Ensure you have Conda installed on your system. Create a new Conda environment using the following command:
+
+`
+conda create -n myenv-credit-risk-machine-learning-pipeline python=3.12.1
+`
+
+`
+conda activate myenv-credit-risk-machine-learning-pipeline
+`
+
+`
+pip install -r requirements.txt
+`
+
+`
+pip install -e .
+`
+
+### Using the Pipeline with MLflow and Weights & Biases
+You can run the pipeline using MLflow. To do this, use the following command:
+'
+mlflow run -v 1.0.0 [URL of your Github repo]
+'
+
+Note: Ensure you are logged in to Weights & Biases for tracking experiments
+
+### Dependencies:
+
+Python Version: 3.12.1
+
+### Tracking, Reproducibility, and Deployment project
+
+
+To track, reproduce, and deploy the machine learning models effectively, we utilize MLflow and Weights & Biases. By integrating these tools into our pipeline, we enhance the transparency and reproducibility of our model development efforts. This integration allows us to maintain a robust framework for experiment management and model tracking, enabling us to consistently achieve and improve our model performance metrics.
+
+<img src="images/tracking.png">
+
 
 ## Evaluation Metrics
 
@@ -409,7 +452,8 @@ The final classifier model was assessed on unseen test data to gauge its real-wo
 
 SHAP values were analyzed to understand the impact of various features on the model's predictions. These values highlight how each feature contributes to pushing the model output from the base value (the output that would be predicted if we did not know any features for the current output) to the actual model output.
 
-**Top Impactful Features (SHAP Values):**
+- Top Impactful Features (SHAP Values)
+
  <img src="images/shap_values.png">
 
 ### Conclusion

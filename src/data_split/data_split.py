@@ -69,11 +69,11 @@ def time_split_dataset(
 
 
 def go(args):
-    
+
     run = wandb.init(job_type="data_pre_process")
 
     logger.info("Creating artifact")
-    
+
     logger.info(args.train_data)
     train_data_path = run.use_artifact(args.train_data).file()
     df = pd.read_pickle(train_data_path)
@@ -90,13 +90,13 @@ def go(args):
         train_end_date=model_config["train_end_date"],
         holdout_end_date=model_config["holdout_end_date"],
         time_column=model_config["time_column"],
-        space_column=model_config["space_column"]
+        space_column=model_config["space_column"],
     )
 
     splits = {
         "train_data": train_df,
         "validation_data": validation_df,
-        "test_data": test_df
+        "test_data": test_df,
     }
 
     # Save the artifacts. We use a temporary directory so we do not leave
@@ -129,8 +129,6 @@ def go(args):
             artifact.wait()
 
 
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Split a dataset into train and test",
@@ -148,19 +146,22 @@ if __name__ == "__main__":
         "--artifact_root",
         type=str,
         help="Root for the names of the produced artifacts. The script will produce 2 artifacts: "
-             "{root}_train.csv and {root}_test.csv",
+        "{root}_train.csv and {root}_test.csv",
         required=True,
     )
-    
+
     parser.add_argument(
-        "--artifact_type", type=str, help="Type for the produced artifacts", required=True
+        "--artifact_type",
+        type=str,
+        help="Type for the produced artifacts",
+        required=True,
     )
-    
+
     parser.add_argument(
         "--data_split",
         help="Fraction of dataset or number of items to include in the test split",
         type=str,
-        required=True
+        required=True,
     )
 
     args = parser.parse_args()

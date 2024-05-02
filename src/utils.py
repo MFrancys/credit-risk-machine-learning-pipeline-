@@ -28,20 +28,20 @@ def calculate_metrics(y_test: np.ndarray, preds: np.ndarray) -> dict:
     """
 
     metrics_dict = {
-        'roc_auc_score': metrics.roc_auc_score(y_true=y_test, y_score=preds),
-        'pr_auc': metrics.average_precision_score(y_true=y_test, y_score=preds),
-        'ks': ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
+        "roc_auc_score": metrics.roc_auc_score(y_true=y_test, y_score=preds),
+        "pr_auc": metrics.average_precision_score(y_true=y_test, y_score=preds),
+        "ks": ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
     }
 
     return metrics_dict
 
 
 def save_pickle(object: list, path: str) -> None:
-    with open(path, 'wb') as handle:
+    with open(path, "wb") as handle:
         pickle.dump(object, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
 
 def load_pickle(path: str) -> object:
-    with open(path, 'rb') as handle:
+    with open(path, "rb") as handle:
         loaded_object = pickle.load(handle)
     return loaded_object

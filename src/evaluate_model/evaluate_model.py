@@ -33,9 +33,9 @@ def calculate_metrics(y_test: np.ndarray, preds: np.ndarray) -> dict:
     """
 
     metrics_dict = {
-        'roc_auc_score': metrics.roc_auc_score(y_true=y_test, y_score=preds),
-        'pr_auc': metrics.average_precision_score(y_true=y_test, y_score=preds),
-        'ks': ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
+        "roc_auc_score": metrics.roc_auc_score(y_true=y_test, y_score=preds),
+        "pr_auc": metrics.average_precision_score(y_true=y_test, y_score=preds),
+        "ks": ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
     }
 
     return metrics_dict
@@ -69,9 +69,9 @@ def go(args):
 
     model_results = calculate_metrics(Y_test, pred_proba)
 
-    run.summary["ROC_AUC"] = model_results['roc_auc_score']
-    run.summary["PR_AUC"] = model_results['pr_auc']
-    run.summary["KS"] = model_results['ks']
+    run.summary["ROC_AUC"] = model_results["roc_auc_score"]
+    run.summary["PR_AUC"] = model_results["pr_auc"]
+    run.summary["KS"] = model_results["ks"]
 
 
 if __name__ == "__main__":

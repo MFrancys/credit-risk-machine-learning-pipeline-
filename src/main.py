@@ -10,7 +10,7 @@ import yaml
 from omegaconf import DictConfig, OmegaConf
 
 
-@hydra.main(config_name='config')
+@hydra.main(config_name="config")
 def go(config: DictConfig):
 
     os.environ["WANDB_PROJECT"] = config["main"]["project_name"]
@@ -21,10 +21,14 @@ def go(config: DictConfig):
     logger.info(root_path)
 
     update_root_path = Path(root_path).parent
-    main_dataset_path_artifact = update_root_path / config["main"]["data_path"]["main_dataset"]
+    main_dataset_path_artifact = (
+        update_root_path / config["main"]["data_path"]["main_dataset"]
+    )
     logger.info(main_dataset_path_artifact)
 
-    credit_report_dataset_path_artifact = update_root_path / config["main"]["data_path"]["credit_report_dataset"]
+    credit_report_dataset_path_artifact = (
+        update_root_path / config["main"]["data_path"]["credit_report_dataset"]
+    )
     logger.info(credit_report_dataset_path_artifact)
 
     # Check which steps we need to execute
@@ -47,7 +51,7 @@ def go(config: DictConfig):
                 "credit_report_dataset_path_artifact": credit_report_dataset_path_artifact,
                 "artifact_name": "final_dataset.pickle",
                 "artifact_type": "final_dataset",
-                "artifact_description": "Train data with preprocessing applied"
+                "artifact_description": "Train data with preprocessing applied",
             },
         )
 
@@ -59,7 +63,6 @@ def go(config: DictConfig):
 
         with open(model_config, "w+") as fp:
             fp.write(OmegaConf.to_yaml(config["data_split"]))
-
 
         _ = mlflow.run(
             os.path.join(root_path, "data_split"),
@@ -87,7 +90,7 @@ def go(config: DictConfig):
                 "train_data": config["data"]["train_data"],
                 "validation_data": config["data"]["validation_data"],
                 "model_config": model_config,
-                "export_artifact": config["model_pipeline"]["export_artifact"]
+                "export_artifact": config["model_pipeline"]["export_artifact"],
             },
         )
 
@@ -105,7 +108,7 @@ def go(config: DictConfig):
             parameters={
                 "model_export": f"{config['model_pipeline']['export_artifact']}:latest",
                 "test_data": config["data"]["test_data"],
-                "model_config": model_config
+                "model_config": model_config,
             },
         )
 

@@ -23,15 +23,23 @@ def build_previous_internal_app_features(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = [i.lower() for i in df.columns]
 
     df = df.assign(
-        previous_internal_apps__ratio_bnpl_approved=(df["n_bnpl_approved_apps"] / df["n_bnpl_apps"]).fillna(0),
+        previous_internal_apps__ratio_bnpl_approved=(
+            df["n_bnpl_approved_apps"] / df["n_bnpl_apps"]
+        ).fillna(0),
         previous_internal_apps__last_bnpl_app_to_application_days=(
-                    df["application_datetime"] - df["first_bnpl_app_date"]).dt.days,
+            df["application_datetime"] - df["first_bnpl_app_date"]
+        ).dt.days,
         previous_internal_apps__first_bnpl_app_to_application_days=(
-                    df["application_datetime"] - df["last_bnpl_app_date"]).dt.days,
-        previous_internal_apps__account_to_application_days=df["account_to_application_days"],
+            df["application_datetime"] - df["last_bnpl_app_date"]
+        ).dt.days,
+        previous_internal_apps__account_to_application_days=df[
+            "account_to_application_days"
+        ],
         previous_internal_apps__n_sf_apps=df["n_sf_apps"].fillna(0),
         previous_internal_apps__n_bnpl_apps=df["n_bnpl_apps"].fillna(0),
-        previous_internal_apps__n_bnpl_approved_apps=df["n_bnpl_approved_apps"].fillna(0),
+        previous_internal_apps__n_bnpl_approved_apps=df["n_bnpl_approved_apps"].fillna(
+            0
+        ),
         previous_internal_apps__n_inquiries_l3m=df["n_inquiries_l3m"].fillna(0),
         previous_internal_apps__n_inquiries_l6m=df["n_inquiries_l6m"].fillna(0),
     )

@@ -37,9 +37,9 @@ def calculate_metrics(y_test: np.ndarray, preds: np.ndarray) -> dict:
     """
 
     metrics_dict = {
-        'roc_auc_score': metrics.roc_auc_score(y_true=y_test, y_score=preds),
-        'pr_auc': metrics.average_precision_score(y_true=y_test, y_score=preds),
-        'ks': ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
+        "roc_auc_score": metrics.roc_auc_score(y_true=y_test, y_score=preds),
+        "pr_auc": metrics.average_precision_score(y_true=y_test, y_score=preds),
+        "ks": ks_2samp(preds[y_test == 0], preds[y_test == 1])[0],
     }
 
     return metrics_dict
@@ -53,8 +53,8 @@ def go(args):
     train_data_path = run.use_artifact(args.train_data).file()
     train_df = pd.read_pickle(train_data_path)
 
-    validation_data_path = run.use_artifact(args. validation_data).file()
-    validation_df = pd.read_pickle( validation_data_path)
+    validation_data_path = run.use_artifact(args.validation_data).file()
+    validation_df = pd.read_pickle(validation_data_path)
 
     with open(args.model_config) as fp:
         model_config = yaml.safe_load(fp)
@@ -75,19 +75,17 @@ def go(args):
 
     model_results = calculate_metrics(Y_valid, xgbm_preds)
 
-    run.summary["ROC_AUC"] = model_results['roc_auc_score']
-    run.summary["PR_AUC"] = model_results['pr_auc']
-    run.summary["KS"] = model_results['ks']
+    run.summary["ROC_AUC"] = model_results["roc_auc_score"]
+    run.summary["PR_AUC"] = model_results["pr_auc"]
+    run.summary["KS"] = model_results["ks"]
 
     ### Export if required
     if args.export_artifact != "null":
-        export_model(run, xgbm_model, features, X_valid, xgbm_preds, args.export_artifact)
+        export_model(
+            run, xgbm_model, features, X_valid, xgbm_preds, args.export_artifact
+        )
 
-    run.log(
-        {
-            "model_results": model_results
-        }
-    )
+    run.log({"model_results": model_results})
 
 
 def export_model(run, pipe, used_columns, X_val, val_pred, export_artifact):
@@ -123,17 +121,12 @@ def export_model(run, pipe, used_columns, X_val, val_pred, export_artifact):
         artifact.wait()
 
 
-
-
-
-
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Train a Random Forest",
         fromfile_prefix_chars="@",
     )
-    
+
     logger.info("--train_data")
     parser.add_argument(
         "--train_data",
@@ -166,7 +159,7 @@ if __name__ == "__main__":
         required=False,
         default="null",
     )
-    
+
     args = parser.parse_args()
 
     go(args)
