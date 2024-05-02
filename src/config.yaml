@@ -1,0 +1,41 @@
+main:
+  project_name: credit-risk-machine-learning-pipeline
+  experiment_name: production
+  execute_steps:
+    - build_data
+    - data_split
+    - evaluate_model
+  data_path:
+    main_dataset: data/raw_data/main_dataset.parquet
+    credit_report_dataset: data/raw_data/credit_reports.parquet
+data:
+  train_data: train_data.pickle:latest
+  validation_data: validation_data.pickle:latest
+  test_data: test_data.pickle:latest
+  ks_alpha: 0.05
+  test_size: 0.3
+data_split:
+  train_start_date: "2022-07"
+  train_end_date: "2023-03"
+  holdout_end_date: "2023-05"
+  time_column: "loan_origination_datetime_month"
+  space_column: "customer_id"
+model_pipeline:
+  target: target
+  random_seed: 42
+  xgbm:
+    max_depth: 3
+    subsample: 0.8
+    colsample_bytree: 0.8
+  features:
+    numerical:
+      - "previous_internal_apps__account_to_application_days"
+      - "previous_internal_apps__n_sf_apps"
+      - "previous_internal_apps__n_bnpl_apps"
+      - "previous_internal_apps__ratio_bnpl_approved"
+      - "previous_internal_apps__n_bnpl_approved_apps"
+      - "previous_internal_apps__last_bnpl_app_to_application_days"
+      - "previous_internal_apps__first_bnpl_app_to_application_days"
+      - "previous_internal_apps__n_inquiries_l3m"
+      - "previous_internal_apps__n_inquiries_l6m"
+  export_artifact: "model_export"

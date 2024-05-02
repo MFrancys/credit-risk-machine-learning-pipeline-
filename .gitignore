@@ -5,7 +5,7 @@ data/processed/
 data/raw_data/
 data/.ipynb_checkpoints/
 mlruns
-models
+models/
 src/.ipynb_checkpoints/
 src.egg-info/
 .python-version
@@ -21,3 +21,5 @@ src/__pycache__/
 .DS_Store
 images/.DS_Store
 build/
+.idea/
+notebook/.ipynb_checkpoints/
