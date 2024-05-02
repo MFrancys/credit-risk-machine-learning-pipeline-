@@ -28,18 +28,14 @@ To develop a robust model, the project was structured into several key phases:
 
 To ensure the model is scalable, reproducible, and easily maintainable, We implemented an ML pipeline that automates the journey from data processing to making predictions. This pipeline encapsulates all the steps necessary to prepare the data, execute the model, and generate predictions, facilitating both deployment and future adjustments.
 
-The code for the pipeline is located in the src folder, and to build the pipeline, you need to execute the following command:
- 
-`
-mlflow run src
-`
+
+### [ML Pipeline code](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/tree/production/src)
+The code for the pipeline is located in the [src folder](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/tree/production/src).
+
 
 ### How to Install ML Pipeline
 
 To set up and run the credit risk machine learning pipeline on your local machine, follow these steps:
-
-Create a Conda Environment:
-Ensure you have Conda installed on your system. Create a new Conda environment using the following command:
 
 `
 conda create -n myenv-credit-risk-machine-learning-pipeline python=3.12.1
@@ -57,12 +53,19 @@ pip install -r requirements.txt
 pip install -e .
 `
 
+### How to build ML Pipeline
+You can build the pipeline using MLflow, use the following command:
+
+`
+mlflow run src
+`
+
 ### Using the Pipeline with MLflow and Weights & Biases
 You can run the pipeline using MLflow. To do this, use the following command:
 
-'
+`
 mlflow run -v 1.0.0 https://github.com/MFrancys/credit-risk-machine-learning-pipeline-
-'
+`
 
 Note: Ensure you are logged in to Weights & Biases for tracking experiments
 
