@@ -1,0 +1,29 @@
+name: credit-risk-machine-learning-pipeline
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+      main_dataset_path_artifact:
+        description: Path for the artifact
+        type: str
+      credit_report_dataset_path_artifact:
+        description: Path for the artifact
+        type: str
+      artifact_name:
+        description: Name for the W&B artifact that will be created
+        type: str
+      artifact_type:
+        description: Type of the artifact to create
+        type: str
+        default: raw_data
+      artifact_description:
+        description: Description for the artifact
+        type: str
+
+    command: >-
+      python build_data.py --main_dataset_path_artifact {main_dataset_path_artifact} \
+                              --credit_report_dataset_path_artifact {credit_report_dataset_path_artifact} \
+                              --artifact_name {artifact_name} \
+                              --artifact_type {artifact_type} \
+                              --artifact_description {artifact_description}

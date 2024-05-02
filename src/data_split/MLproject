@@ -1,0 +1,27 @@
+name: building-home-credit-default-risk-machine-learning-model
+conda_env: conda.yml
+
+entry_points:
+  main:
+    parameters:
+      train_data:
+        description: Type of the artifact to create
+        type: str
+        default: raw_data
+      artifact_root:
+        description: Name for the W&B artifact that will be created
+        type: str
+      artifact_type:
+        description: Type of the artifact to create
+        type: str
+        default: raw_data
+      data_split:
+        description: If provided, it is considered a column name to be used for stratified splitting
+        type: str
+        default: "null"
+
+    command: >-
+      python data_split.py --train_data {train_data} \
+                    --artifact_root {artifact_root} \
+                    --artifact_type {artifact_type} \
+                    --data_split {data_split}

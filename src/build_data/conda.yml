@@ -1,0 +1,13 @@
+name: credit-risk-machine-learning-pipeline
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - requests=2.31.0
+  - pip=24.0
+  - pip:
+      - wandb==0.16.6
+      - loguru==0.7.2
+      - opendatasets==0.1.22
+      - pandas==2.2.1
+      - pyarrow==16.0.0
