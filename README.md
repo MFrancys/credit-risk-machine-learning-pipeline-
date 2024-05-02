@@ -53,8 +53,9 @@ pip install -e .
 
 ### Using the Pipeline with MLflow and Weights & Biases
 You can run the pipeline using MLflow. To do this, use the following command:
+
 '
-mlflow run -v 1.0.0 [URL of your Github repo]
+mlflow run -v 1.0.0 https://github.com/MFrancys/credit-risk-machine-learning-pipeline-
 '
 
 Note: Ensure you are logged in to Weights & Biases for tracking experiments
@@ -93,7 +94,7 @@ On the other hand, to choose the structure of the model and evaluate its perform
 Additionally, one of the characteristics of this problem is the not repaid loan sample is much higher than the repaid loan sample. Therefore, We also evaluated the Precision-Recall AUC (PR AUC), which is a more robust metric to evaluate a classifier in these situations to deal with class imbalance.
 
 
-### [1.0.0 Build inputs from Previous Internal Applications](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.0.0_build_inputs_from_previous_internal_applications.ipynb)
+### [1.0.0 Build inputs from Previous Internal Applications](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/1.0.0_build_inputs_from_previous_internal_applications.ipynb)
 #### - Methodology
 This section aims to create informative and meaningful features that capture customers' past interactions with credit products, particularly their Buy Now, Pay Later (BNPL) applications and SF applications. 
 
@@ -113,7 +114,7 @@ Here are some features we explored:
   - Days from Last BNPL Application to Loan Application (previous_internal_apps__last_bnpl_app_to_application_days): The number of days between the date of the last BNPL application and the date of the current loan application (application_datetime - last_bnpl_app_date).
   - Days from First BNPL Application to Loan Application (previous_internal_apps__first_bnpl_app_to_application_days): The number of days between the date of the first BNPL application and the date of the current loan application (application_datetime - first_bnpl_app_date).
 
-### [1.1.0 Build inputs from credit reports dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.1.0_build_inputs_from_credit_reports_dataset.ipynb) 
+### [1.1.0 Build inputs from credit reports dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/1.1.0_build_inputs_from_credit_reports_dataset.ipynb) 
 
 #### - Methodology
 The goal of this section is to construct informative and actionable features from the credit reports dataset that encapsulate each customer's credit history effectively. This involves a meticulous aggregation and transformation of credit-related data
@@ -128,7 +129,7 @@ Here are some features we explored, overall and by credit time:
     - Diversity in Credit Types (credit_reports__credit_type_nunique): The count of unique types of credit, which illustrates the variety of credit facilities used by the customer.
     - Age of Credit (credit_reports__age): Measures the duration from the opening to the closing of the credit or to the current date if it's still active, providing insights into the longevity of credit relationships.
 
-### [1.2.0 Build Final Dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/build-risk-ml-pipeline/notebook/1.2.0_build_final_dataset.ipynb)
+### [1.2.0 Build Final Dataset](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/1.2.0_build_final_dataset.ipynb)
 
 #### Methodology:
 The main goal of this stage is to compile the final dataset that merges the target variable with features generated from previous steps, specifically those created by build_previous_internal_app_features and build_aggregate_credit_report_information_by. This comprehensive dataset will be the foundation for all subsequent modeling efforts, such as training and validation of machine learning models to predict customer creditworthiness.
@@ -138,7 +139,7 @@ Data Integration:
 2. Add Aggregated Credit Information: Integrate additional features from the build_aggregate_credit_report_information_by function. This includes detailed credit behavior metrics at the customer level, further enriching the dataset.
 
 
-### [1.3.0 Target Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/1.3.0_target_analysis.ipynb)
+### [1.3.0 Target Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/1.3.0_target_analysis.ipynb)
 
 #### Methodology
 This section of the analysis focuses on examining the target variable, which identifies whether a loan is bad (i.e., the customer was 34 days late or more in 77 days of contract). Understanding patterns in the bad rate is crucial for assessing risk and calibrating the model accordingly.
@@ -180,7 +181,7 @@ This section of the analysis focuses on examining the target variable, which ide
     | (30, 300]                         | 3364  | 549       | 0.163199 |
 
 
-### [2.0.0 - Data Split](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/2.0.0_split_dataset.ipynb)
+### [2.0.0 - Data Split](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/2.0.0_split_dataset.ipynb)
 
 #### Methodology
 
@@ -208,7 +209,7 @@ This section details the process of splitting the dataset into training, validat
 | Test       | 3845      | 650  | 2023-03    | 2023-04  | 0.169051            | 0.267441             |
 
 
-### [3.0.0. EDA](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/3.0.0_eda.ipynb)
+### [3.0.0. EDA](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/3.0.0_eda.ipynb)
 
 #### Methodology
 
@@ -219,7 +220,7 @@ As part of our data preparation and understanding phase, we conducted an extensi
 - Missing Values: Identifying and visualizing missing data patterns, helping to decide necessary preprocessing steps.
 - Distributions: Visualizations of data distributions and variance to understand the skewness and outliers that might influence model performance.
 
-### [3.1.0. EDA: Identify Features with High Correlation](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/3.1.0_eda_high_correlation_variables.ipynb)
+### [3.1.0. EDA: Identify Features with High Correlation](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/3.1.0_eda_high_correlation_variables.ipynb)
 
 #### Methodology
 
@@ -237,7 +238,7 @@ Approach:
 - Initial Feature Count: Begin with an initial set of 262 features.
 - Feature Exclusion: After applying the correlation threshold, identify 109 features that are highly correlated with others. From each correlated pair or group, choose to drop the feature that is less significant from a business or data quality perspective, retaining 153 features for further analysis.
 
-### 4.0.0. Building a Baseline Classifier Model
+### [4.0.0. Building a Baseline Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/4.0.0_build_baseline_classifier_model.ipynb)
 
 #### Methodology
 
@@ -322,7 +323,7 @@ The following results were observed across the models, showing the pros and cons
 
 Based on the evaluation metrics, XGBM outperforms the other models with the highest ROC AUC, PR AUC, and KS scores, making it the most suitable choice given the complexity of the dataset with unbalanced data and non-linear relationships.
 
-### [5.0.0. Classifier Model with Feature Selection](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/5.0.0_classifier_model_with_feature_selection-Copy1.ipynb)
+### [5.0.0. Classifier Model with Feature Selection](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/5.0.0_classifier_model_with_feature_selection.ipynb)
 
 #### Methodology
 
@@ -345,7 +346,7 @@ In our modeling phase, we implemented feature selection using the Boruta algorit
      - 'credit_reports__severity_delayed_payments_median_pagos_fijos'
      - 'credit_reports__severity_delayed_payments_median_revolvente'
 
-### [6.0.0 Hyperparameter Optimization for Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/6.0.0_hyperparameter_optimization_for_classifier_model.ipynb)
+### [6.0.0 Hyperparameter Optimization for Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/6.0.0_hyperparameter_optimization_for_classifier_model.ipynb)
 
 #### Methodology
 
@@ -361,8 +362,7 @@ The primary goal is to tune the XGBOOST parameters:
     - max_delta_step: Introduced a broader range to help stabilize updates in scenarios of high class imbalance.
     - n_estimators: Increased the maximum to allow more trees to be evaluated, which can be crucial when all other parameters are being optimized for better granularity.
 
-### [7.0.0 Building a Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/7.0.0_build_final_classifier_model.ipynb)
-
+### [7.0.0 Building a Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/7.0.0_build_final_classifier_model.ipynb)
 #### Methodology
 
 The modeling process culminates in constructing the final classifier model using XGBoost. The final model incorporates a set of finely tuned parameters to optimize performance, mainly focusing on handling the dataset's imbalanced nature. The parameters were selected based on previous optimization efforts, ensuring the model is robust, generalizes well on unseen data, and maximizes the AUC metric.
@@ -419,7 +419,7 @@ These results indicate the model's effectiveness in discriminating between posit
 
 These steps will help refine the model to meet better the business goals of reducing credit risk while ensuring fair and efficient loan approval processes.
 
-# [8.0.0 Evaluate Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/8.0.0_evaluate_final_classifier_model.ipynb)
+# [8.0.0 Evaluate Final Classifier Model](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/8.0.0_evaluate_final_classifier_model.ipynb)
 
 ### Performance Evaluation
 
@@ -462,7 +462,7 @@ The evaluation of the final model shows moderate performance with room for impro
 
 Future efforts will focus on enhancing model accuracy and robustness through advanced feature engineering, hyperparameter optimization, and possibly integrating additional data sources to enrich the model's understanding of the applicant's financial behavior.
 
-### [8.1.0. Score Band Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/init-ml-pipeline/notebook/8.1.0_score_band_analysis.ipynb)
+### [8.1.0. Score Band Analysis](https://github.com/MFrancys/credit-risk-machine-learning-pipeline-/blob/production/notebook/8.1.0_score_band_analysis.ipynb)
 
 #### Overview
 This section presents the analysis of score bands derived from the final model. Score bands help to segment the population based on the risk of default. The segments are created using the score predicted by the model, allowing us to observe the distribution of bad and good loans across different score ranges.
