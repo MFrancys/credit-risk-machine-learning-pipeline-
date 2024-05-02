@@ -28,6 +28,12 @@ To develop a robust model, the project was structured into several key phases:
 
 To ensure the model is scalable, reproducible, and easily maintainable, We implemented an ML pipeline that automates the journey from data processing to making predictions. This pipeline encapsulates all the steps necessary to prepare the data, execute the model, and generate predictions, facilitating both deployment and future adjustments.
 
+The code for the pipeline is located in the src folder, and to build the pipeline, you need to execute the following command:
+ 
+`
+mlflow run src
+`
+
 ### How to Install ML Pipeline
 
 To set up and run the credit risk machine learning pipeline on your local machine, follow these steps:
